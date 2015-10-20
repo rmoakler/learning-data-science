@@ -19,11 +19,12 @@ def Decision_Surface(data, target, model, surface=True, probabilities=False, cel
         
         meshed_data = np.c_[meshed_data, np.power(xx.ravel(), i)]
 
-    # Predict on the mesh
-    if probabilities:
-        Z = model.predict_proba(meshed_data)[:, 1].reshape(xx.shape)
-    else:
-        Z = model.predict(meshed_data).reshape(xx.shape)
+    if model != None:
+        # Predict on the mesh
+        if probabilities:
+            Z = model.predict_proba(meshed_data)[:, 1].reshape(xx.shape)
+        else:
+            Z = model.predict(meshed_data).reshape(xx.shape)
     
     # Plot mesh and data
     if data.shape[1] > 2:
@@ -32,7 +33,7 @@ def Decision_Surface(data, target, model, surface=True, probabilities=False, cel
         plt.title("humor and number_pets")
     plt.xlabel("humor")
     plt.ylabel("number_pets")
-    if surface:
+    if surface and model != None:
         cs = plt.contourf(xx, yy, Z, cmap=plt.cm.coolwarm, alpha=0.4)
     color = ["blue" if t == 0 else "red" for t in target]
     plt.scatter(data[data.columns[0]], data[data.columns[1]], color=color)
@@ -42,7 +43,7 @@ def create_data():
     np.random.seed(36)
 
     # Number of users
-    n_users = 300
+    n_users = 600
 
     # Relationships
     variable_names = ["humor", "number_pets", "age", "favorite_number"]

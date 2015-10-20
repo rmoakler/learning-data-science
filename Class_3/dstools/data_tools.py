@@ -46,22 +46,24 @@ def create_data():
     n_users = 600
 
     # Relationships
-    variable_names = ["humor", "number_pets", "age", "favorite_number"]
+    variable_names = ["humor", "number_pets"]
     target_name = "success"
 
     # Generate data
-    predictors, target = datasets.make_classification(n_features=4, n_redundant=0, 
-                                                      n_informative=2, n_clusters_per_class=2,
-                                                      n_samples=n_users)
-    data = pd.DataFrame(predictors, columns=variable_names)
+    a = np.random.normal(5, 5, 600)
+    b = np.random.normal(10, 5, 600)
+    c = np.random.normal(20, 5, 600)
 
-    # Scale
-    data['humor'] = data['humor'] * 10 + 50
-    data['number_pets'] = (data['number_pets'] + 6)/2
+    x1 = list(a+10) + list(c+10) + list(b+10)
+    x2 = list((b+10)/10) + list((b+10)/10) + list((c+10)/10)
+    target = list(np.ones(len(b))) + list(np.ones(len(b))) + list(np.zeros(len(b)))
+
+    data = pd.DataFrame(np.c_[x1, x2], columns=variable_names)
 
     # Add interactions
     data['humor^2'] = np.power(data['humor'], 2)
     data['humor^3'] = np.power(data['humor'], 3)
+    data['humor^4'] = np.power(data['humor'], 4)
 
     data[target_name] = target
 
@@ -69,9 +71,9 @@ def create_data():
     return target_name, variable_names, data, Y
 
 def X(complexity=1):
-    drops = ["success", "age", "favorite_number"]
+    drops = ["success"]
     
-    for i in [2, 3]:
+    for i in [2, 3, 4]:
         if i > complexity:
             drops.append("humor^" + str(i))
     

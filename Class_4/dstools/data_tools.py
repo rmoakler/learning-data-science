@@ -81,6 +81,8 @@ def handson_data():
     X = X[order]
     Y = Y[order]
 
+    X = pd.DataFrame(X, columns=['earning', 'geographic', 'experience'])
+
     return X, Y
 
 def X(complexity=1):

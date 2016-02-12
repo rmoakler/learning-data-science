@@ -62,6 +62,19 @@ def information_gain(X, Y, feature_name, threshold):
     # Return information gain
     return ig
 
+def get_highest_ig(X, Y, feature_name):
+    maximum_ig = 0
+    maximum_ig_threshold = 0
+
+    for current_threshold in X[feature_name]:
+        current_ig = information_gain(X, Y, feature_name, threshold=current_threshold)
+        
+        if current_ig > maximum_ig:
+            maximum_ig = current_ig
+            maximum_ig_threshold = current_threshold
+
+    return "The maximum IG of " + str(maximum_ig) + " was found when number_of_pets = " + str(maximum_ig_threshold)
+
 def print_tree(tree):
     dot_data = StringIO.StringIO()
     export_graphviz(tree, out_file=dot_data)
